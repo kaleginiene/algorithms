@@ -108,3 +108,32 @@ const closestValue = (root: TreeNode | null, target: number): number => {
 };
 
 console.log(closestValue(tree, 10.2345));
+
+// 617. Merge Two binary trees
+// You are given two binary trees root1 and root2.
+
+// Imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not. You need to merge the two trees into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the NOT null node will be used as the node of the new tree.
+
+// Return the merged tree.
+
+// Note: The merging process must start from the root nodes of both trees.
+
+const mergeTrees = (
+  root1: TreeNode | null | undefined,
+  root2: TreeNode | null | undefined
+): TreeNode | null => {
+  if (!root1 && !root2) return null;
+  if (root1 && !root2) return root1;
+  if (!root1 && root2) return root2;
+  const val1 = root1?.val ? root1.val : 0;
+  const val2 = root2?.val ? root2.val : 0;
+
+  const mergedTree: TreeNode = new TreeNode(val1 + val2);
+
+  mergedTree.left = mergeTrees(root1?.left, root2?.left);
+  mergedTree.right = mergeTrees(root1?.right, root2?.right);
+
+  return mergedTree;
+};
+
+console.log(mergeTrees(tree, tree));
