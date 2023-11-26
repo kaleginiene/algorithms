@@ -61,9 +61,9 @@ const validPath = (
     let neighbours = adjacencyList.get(startingPoint);
 
     if (neighbours && neighbours.length > 0) {
-      for (let i = 0; i < neighbours.length; i++) {
-        if (!visited.has(neighbours[i])) {
-          dfs(neighbours[i]);
+      for (const neighbour of neighbours) {
+        if (!visited.has(neighbour)) {
+          dfs(neighbour);
         }
       }
     }
@@ -78,4 +78,92 @@ const validPath = (
   return visited.has(destination);
 };
 
-console.log(validPath(n, edges, source, destination));
+// console.log(validPath(n, edges, source, destination));
+
+// AIRPORTS GRAPH
+
+const airports: string[] = "PHX BKK OKC JFK LAX MEX EZE HEL LOS LAP LIM".split(
+  " "
+);
+
+const routes: string[][] = [
+  ["PHX", "LAX"],
+  ["PHX", "JFK"],
+  ["JFK", "OKC"],
+  ["JFK", "HEL"],
+  ["JFK", "LOS"],
+  ["MEX", "LAX"],
+  ["MEX", "BKK"],
+  ["MEX", "LIM"],
+  ["MEX", "EZE"],
+  ["LIM", "BKK"],
+];
+
+const adjacencyList: Map<string, string[]> = new Map();
+
+const addAirportToAdjacencyList = (airport: string): void => {
+  adjacencyList.set(airport, []);
+};
+airports.forEach((airport: string) => addAirportToAdjacencyList(airport));
+// Map(11) {
+//     'PHX' => [],
+//     'BKK' => [],
+//     'OKC' => [],
+//     'JFK' => [],
+//     'LAX' => [],
+//     'MEX' => [],
+//     'EZE' => [],
+//     'HEL' => [],
+//     'LOS' => [],
+//     'LAP' => [],
+//     'LIM' => []
+//   }
+
+const addDestinations = (airport: string, destination: string): void => {
+  adjacencyList.get(airport)?.push(destination);
+  adjacencyList.get(destination)?.push(airport);
+};
+
+routes.forEach((route: string[]) => addDestinations(route[0], route[1]));
+// Map(11) {
+//     'PHX' => [ 'LAX', 'JFK' ],
+//     'BKK' => [ 'MEX', 'LIM' ],
+//     'OKC' => [ 'JFK' ],
+//     'JFK' => [ 'PHX', 'OKC', 'HEL', 'LOS' ],
+//     'LAX' => [ 'PHX', 'MEX' ],
+//     'MEX' => [ 'LAX', 'BKK', 'LIM', 'EZE' ],
+//     'EZE' => [ 'MEX' ],
+//     'HEL' => [ 'JFK' ],
+//     'LOS' => [ 'JFK' ],
+//     'LAP' => [],
+//     'LIM' => [ 'MEX', 'BKK' ]
+//   }
+
+//BFS Breadth First Search
+// Queue - a list, where first item in and first item out
+
+// CHECK IF there is a route between startAirport and destination airport
+const bfs = (startAirport: string, destAirport: string) => {
+  const queue: string[] = [startAirport];
+  const visitedAirports: Set<string> = new Set();
+
+  while (queue.length > 0) {
+    // shift mutates the original array and removes the first item and returns it;
+    const airport: string = queue.shift()!; //! fixes TS of airport posibility to be undefined. We are sure that at least one item is in the queue, if not, the while loop should not initiate
+    const destinations: string[] | undefined = adjacencyList.get(airport);
+
+    if (destinations?.length) {
+      for (const destination of destinations) {
+        if (!visitedAirports.has(destination)) {
+          visitedAirports.add(destination);
+          queue.push(destination);
+        }
+      }
+    }
+  }
+
+  console.log(visitedAirports);
+  return visitedAirports.has(destAirport);
+};
+
+console.log({ routeExists: bfs("PHX", "BKK") });
