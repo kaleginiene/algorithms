@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --quiet systemDesign.ts"
+    "start": "nodemon --quiet lruCache.ts"
   },
   "author": "",
   "license": "ISC",
