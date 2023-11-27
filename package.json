@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --quiet meetingRooms.ts"
+    "start": "nodemon --quiet topKelement.ts"
   },
   "author": "",
   "license": "ISC",
