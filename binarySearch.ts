@@ -15,7 +15,7 @@
 // Output: -1
 // Explanation: 2 does not exist in nums so return -1
 
-const nums = [-1, 0, 3, 5, 9, 12];
+const numsList = [-1, 0, 3, 5, 9, 12];
 const target = 9;
 
 const search = (nums: number[], target: number): number => {
@@ -40,6 +40,6 @@ const search = (nums: number[], target: number): number => {
   return -1;
 };
 
-console.log(search(nums, target));
+console.log(search(numsList, target));
 
 // Binary search is an efficient algorithm for finding an item from a sorted list of items. It works by repeatedly dividing in half the portion of the list that could contain the item, until you've narrowed down the possible locations to just one.
